@@ -6,6 +6,7 @@ import json
 import numpy as np
 import os
 import urllib.request
+import uuid
 
 from tqdm import tqdm
 from datetime import datetime
@@ -38,7 +39,7 @@ class ScrapePlateNumber :
 
         # Initializing Chrome Web Driver and its Configuration
         chrome_options = Options()
-        chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--headless")
         chrome_options.add_argument("window-size=1920x1080")
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.add_argument("--ignore-ssl-errors")
@@ -89,17 +90,20 @@ class ScrapePlateNumber :
             sys.exit()
 
     # Method to set Language to English
-    def changeToImages(self):
+    def changeToImages(self, keyword):
         # Update Language to English
         try:
-            links = self.browser.find_elements_by_tag_name("a")
-            for link in links:
-                print( link.text)
-                if link.get_attribute('data-hveid') == "CAEQAw":
-                    url = link.get_attribute('href')
-                    break
+            wrd = keyword.replace(" ", "+")
+            wrd.strip()
+            url = self.site_url + "/search?q=" + wrd + "&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiA_paD5IDyAhXlyIUKHaZxArsQ_AUoAXoECAIQAw"
+            # links = self.browser.find_elements_by_tag_name("a")
+            # for link in links:
+            #     print( link.text)
+            #     if link.get_attribute('data-hveid') == "CAIQAw":
+            #         url = link.get_attribute('href')
+            #         break
             self.browser.get(url)
-            time.sleep(20)
+            time.sleep(10)
             print("gotten url " + url)
             print("Images section Loaded")
         except TimeoutException as timeoutException:
@@ -120,11 +124,11 @@ class ScrapePlateNumber :
         return null_count
 
     # Method to scrol down to load all images
-    def scrollDown (self, data_name, max_imgs=200):
+    def scrollDown (self, data_name, folder_name, max_imgs=200):
         # print(self.tqdm)
         # if self.tqdm._instances :
         #     self.tqdm._instances.clear()
-        folder_name = data_name + "/"
+        folder_name = folder_name
         file_name = data_name.replace(" ", "-")
         
         # Get scroll height
@@ -210,13 +214,13 @@ class ScrapePlateNumber :
         url_is_loaded = self.loadURL()
 
         if url_is_loaded:
-            folder_name = keyword + "/"
+            folder_name = keyword + str(uuid.uuid1()) + "/"
             os.mkdir(self.path + folder_name)
             self.searchKeyword(keyword)
             time.sleep(5)
-            self.changeToImages()
+            self.changeToImages(keyword)
             time.sleep(5)
-            self.scrollDown(keyword, max_imgs)
+            self.scrollDown(keyword, folder_name, max_imgs)
             # self.getImagesLink()
         else:
             sys.exit()
