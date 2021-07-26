@@ -9,10 +9,10 @@ Google Image Scraper is a python Application that scrappes google.com URL for a 
 ## Installation
 Google Image Scraper is a python application developed using selenium , the following steps will guide you on how to setup and run it locally.
 
-* STEP 1: DOWNLOAD OR PULL STUDYBUDY FOLDER
+* STEP 1: DOWNLOAD OR PULL Google-Image-Scraper FOLDER
 * STEP 2: OPEN TERMINAL AND CD INTO Google-Image-Scraper FOLDER
 ```bash
-cd ...../~studybudy_folder~/
+cd ...../~Google-Image-Scraper_folder~/
 ```
 * STEP 3: CREATE VIRTUAL ENVIRONMENT FOLDER
 * first install virtualenv

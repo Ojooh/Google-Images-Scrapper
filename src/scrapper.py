@@ -124,8 +124,9 @@ class ScrapePlateNumber :
         # print(self.tqdm)
         # if self.tqdm._instances :
         #     self.tqdm._instances.clear()
+        folder_name = data_name + "/"
+        file_name = data_name.replace(" ", "-")
         
-        data_name = data_name.replace(" ", "-")
         # Get scroll height
         last_height = self.browser.execute_script("return document.body.scrollHeight")
 
@@ -159,7 +160,8 @@ class ScrapePlateNumber :
         
         # urllib save images into folder and renames using data_name string
         for i,link in enumerate(tqdm(links)):
-            img_name =  self.path + data_name + "-"
+            
+            img_name =  self.path + folder_name + file_name +  "-"
             name = img_name+f'{i}.jpeg'
 
             urllib.request.urlretrieve(link, name)
@@ -208,6 +210,8 @@ class ScrapePlateNumber :
         url_is_loaded = self.loadURL()
 
         if url_is_loaded:
+            folder_name = keyword + "/"
+            os.mkdir(self.path + folder_name)
             self.searchKeyword(keyword)
             time.sleep(5)
             self.changeToImages()
